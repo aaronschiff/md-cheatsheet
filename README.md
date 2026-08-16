@@ -17,17 +17,17 @@ Requires macOS.
 3. Grant Hammerspoon Accessibility permission: **System Settings → Privacy &
    Security → Accessibility** → enable Hammerspoon. (Required for the hotkey
    and for the popup to take keyboard focus.)
-4. Clone this repo to `~/Workshop/md-cheatsheet` (or elsewhere, if you also
+4. Clone this repo to `~/md-cheatsheet` (or elsewhere, if you also
    update the path in step 5 and `mdPath` in `cheatsheet.lua`):
    ```sh
-   git clone <this-repo-url> ~/Workshop/md-cheatsheet
+   git clone <this-repo-url> ~/md-cheatsheet
    ```
 5. Point Hammerspoon at the module. If you don't already have a
    `~/.hammerspoon/init.lua`, create one containing:
    ```lua
    -- Load the cheatsheet popup from its repo, so the repo stays the source of
    -- truth and this file is just a pointer.
-   package.path = os.getenv("HOME") .. "/Workshop/md-cheatsheet/?.lua;" .. package.path
+   package.path = os.getenv("HOME") .. "~/md-cheatsheet/?.lua;" .. package.path
 
    local cheatsheet = require("cheatsheet")
    cheatsheet.start()
