@@ -17,23 +17,25 @@ Requires macOS.
 3. Grant Hammerspoon Accessibility permission: **System Settings → Privacy &
    Security → Accessibility** → enable Hammerspoon. (Required for the hotkey
    and for the popup to take keyboard focus.)
-4. Clone this repo to `~/md-cheatsheet` (or elsewhere, if you also
-   update the path in step 5 and `mdPath` in `cheatsheet.lua`):
+4. Clone this repo anywhere you like, e.g. `~/md-cheatsheet`:
    ```sh
-   git clone <this-repo-url> ~/md-cheatsheet
+   git clone https://github.com/aaronschiff/md-cheatsheet.git ~/md-cheatsheet
    ```
-5. Point Hammerspoon at the module. If you don't already have a
+5. Point Hammerspoon at the module — update the `package.path` line below to
+   match wherever you cloned it. If you don't already have a
    `~/.hammerspoon/init.lua`, create one containing:
    ```lua
    -- Load the cheatsheet popup from its repo, so the repo stays the source of
    -- truth and this file is just a pointer.
-   package.path = os.getenv("HOME") .. "~/md-cheatsheet/?.lua;" .. package.path
+   package.path = os.getenv("HOME") .. "/md-cheatsheet/?.lua;" .. package.path
 
    local cheatsheet = require("cheatsheet")
    cheatsheet.start()
    ```
    If you already have an `init.lua` for other Hammerspoon config, append
-   these lines to it instead of replacing the file.
+   these lines to it instead of replacing the file. `cheatsheet.lua` finds
+   `cheatsheet.md` relative to its own location, so no other path needs
+   updating.
 6. Reload Hammerspoon's config (menu-bar icon → **Reload Config**).
 7. Press **⌃⌥M** to open the cheatsheet; **Esc**, ⌃⌥M again, or clicking
    outside closes it.
@@ -50,9 +52,11 @@ preferences so the hotkey is available after every restart.
 ## How it works
 
 - **Hammerspoon** provides the hotkey, window, and rendering host. 
-- `cheatsheet.lua` is the whole implementation. On hotkey it renders
-  `cheatsheet.md` → HTML via **pandoc** (`hs.task`, absolute path
-  `/opt/homebrew/bin/pandoc` because Hammerspoon's PATH is unreliable), wraps
+- `cheatsheet.lua` is the whole implementation. It locates `cheatsheet.md`
+  relative to its own file location (via `debug.getinfo`), so the repo works
+  wherever it's cloned. On hotkey it renders that file → HTML via **pandoc**
+  (`hs.task`, absolute path `/opt/homebrew/bin/pandoc` because Hammerspoon's
+  PATH is unreliable), wraps
   it in an HTML template with embedded light/dark CSS, and shows it in a
   floating `hs.webview` (titled/closable/utility/resizable style, titled
   "Markdown Cheatsheet - ESC to close", fixed 600px width and

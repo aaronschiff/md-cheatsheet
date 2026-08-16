@@ -10,8 +10,10 @@
 
 local M = {}
 
-local home = os.getenv("HOME")
-local mdPath = home .. "/Workshop/md-cheatsheet/cheatsheet.md"
+-- Derive mdPath from this script's own location (not a hardcoded clone path)
+-- so the module works wherever the repo is cloned.
+local scriptPath = debug.getinfo(1, "S").source:match("^@(.*)$")
+local mdPath = scriptPath:match("^(.*)/") .. "/cheatsheet.md"
 local pandocPath = "/opt/homebrew/bin/pandoc"
 
 local webview = nil -- hs.webview while the popup is open
